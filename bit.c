@@ -25,11 +25,11 @@ void printBits(Bit *bits) {
 }
 
 /**
- * @brief Créer une liste de bits
+ * @brief Créer une liste de bits de manière itérative
  * 
  * @param size unsigned int - taille de la liste de bits
  */
-Bit *initBits(uint size) {
+Bit *initIterBits(uint size) {
     Bit *bits = NULL;
     for (uint i = 0; i < size; i++) {
         bits = ajouterBit_tete(bits, generateBit());
@@ -38,12 +38,25 @@ Bit *initBits(uint size) {
 }
 
 /**
+ * @brief Créer une liste de bits de manière récursive
+ * 
+ * @param size unsigned int - taille de la liste de bits
+ */
+Bit *initRecurBits(uint size) {
+    if (!size) {
+        return NULL;
+    } else {
+        return ajouterBit_tete(initRecurBits(size - 1), generateBit());
+    }
+}
+
+/**
  * @brief Donne la taille d'une liste de bits, récursivement
  * 
  * @param bit Bit* - liste de bits
  * @return unsigned int 
  */
-unsigned int longueurBit(Bit *bit) {
+uint longueurBit(Bit *bit) {
     if (bit == NULL) {
         return 0;
     }

@@ -34,7 +34,7 @@ Population initPopulation(int taille, int sizeIndiv) {
     population.individus = NULL;
 
     while (taille != 0) {
-        population.individus = ajouterIndivWithBits_tete(population.individus, initBits(sizeIndiv));
+        population.individus = ajouterIndiv_tete(population.individus, sizeIndiv);
         --taille;
     }
     return population;
@@ -135,7 +135,7 @@ Population croisementPopulation(Population population, float pCroise) {
         
         population2.individus = ajouterIndivWithBits_tete(population2.individus, croised.bit1);
         population2.individus = ajouterIndivWithBits_tete(population2.individus, croised.bit2);
-        k += 1;
+        k += 2;
     }
     return population2;
 }

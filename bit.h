@@ -63,11 +63,18 @@ uchar generateBit();
 void printBits(Bit *bits);
 
 /**
- * @brief Créer une liste de bits
+ * @brief Créer une liste de bits de manière itérative
  * 
  * @param size unsigned int - taille de la liste de bits
  */
-Bit *initBits(uint size);
+Bit *initIterBits(uint size);
+
+/**
+ * @brief Créer une liste de bits de manière récursive
+ * 
+ * @param size unsigned int - taille de la liste de bits
+ */
+Bit *initRecurBits(uint size);
 
 /**
  * @brief Donne la taille d'une liste de bits, récursivement

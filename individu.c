@@ -33,7 +33,7 @@ void print1Indiv(Individu *indiv) {
  * @return Individu* 
  */
 Individu *ajouterIndiv_tete(Individu *indiv, uint size) {
-    Individu *newIndiv = initIterIndividu(size);
+    Individu *newIndiv = initIndividu(size);
     newIndiv->next = indiv;
     return newIndiv;
 }
@@ -46,7 +46,7 @@ Individu *ajouterIndiv_tete(Individu *indiv, uint size) {
  * @return Individu* 
  */
 Individu *ajouterIndiv_queue(Individu *indiv, uint size) {
-    Individu *newIndiv = initIterIndividu(size);
+    Individu *newIndiv = initIndividu(size);
     if (EMPTY(indiv)) {
         return newIndiv;
     }
@@ -144,39 +144,17 @@ Individu *lastIndiv(Individu* indiv) {
 }
 
 /**
- * @brief Initialisation d'un individu, initialisation de la liste de bits aléatoirement de manière itérative
+ * @brief Initialisation d'un individu
  * 
  * @param longIndiv int - taille de la liste de bits
  * @return Individu* 
  */
-Individu *initIterIndividu(uint longIndiv) {
+Individu *initIndividu(uint longIndiv) {
     Individu *indiv = (Individu*) malloc(sizeof(Individu));
     indiv->longIndiv = longIndiv;
     indiv->next = NULL;
-    Bit *bits = NULL;
-    for (uint i = 0; i < longIndiv; i++) {
-        bits = ajouterBit_tete(bits, generateBit());
-    }
-    indiv->bits = bits;
+    indiv->bits = initRecurBits(longIndiv);
     return indiv;
-}
-
-/**
- * @brief Initialisation d'un individu, initialisation de la liste de bits aléatoirement de manière récursive
- * 
- * @return Individu* 
- */
-Individu *initRecurIndividu(Bit* bits, uint size, uint longIndiv) {
-    if (size == 0) {
-        Individu *indiv = (Individu*) malloc(sizeof(Individu));
-        indiv->longIndiv = longIndiv;// ?? => toujours 0
-        indiv->next = NULL;
-        indiv->bits = bits;
-        return indiv;
-    } else {
-        bits = ajouterBit_tete(bits, generateBit());
-        return initRecurIndividu(bits, size - 1, longIndiv);
-    }
 }
 
 /**

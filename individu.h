@@ -92,22 +92,12 @@ Individu *ajouterIndivWithBits_queue(Individu *indiv, Bit *bits);
 Individu* lastIndiv(Individu* indiv);
 
 /**
- * @brief Initialisation d'un individu, initialisation de la liste de bits aléatoirement de manière itérative
+ * @brief Initialisation d'un individu
  * 
- * @param longIndiv unsigned int - taille de la liste de bits
+ * @param longIndiv int - taille de la liste de bits
  * @return Individu* 
  */
-Individu *initIterIndividu(uint longIndiv);
-
-/**
- * @brief Initialisation d'un individu, initialisation de la liste de bits aléatoirement de manière récursive
- * 
- * @param bits Bit* - liste de bits
- * @param size unsigned int - nombre d'itération restante
- * @param longIndiv unsigned int - taille de la liste de bits
- * @return Individu* 
- */
-Individu *initRecurIndividu(Bit* bits, uint size, uint longIndiv);
+Individu *initIndividu(uint longIndiv);
 
 /**
  * @brief Décode un individu
