@@ -165,21 +165,13 @@ Individus initIndividu(uint longIndiv) {
  */
 uint decodeIndividu(Individu indiv) {
     int res = 0;
-    int power = 1;
-    Bits tmp = NULL, bits = indiv.bits; 
+    Bits bits = indiv.bits; 
 
     while (!EMPTY(bits)) {
-        tmp = ajouterBit_tete(tmp, HEAD(bits));
+        res = res * 2 + HEAD(bits);
         bits = RESTE(bits);
     }
-    bits = tmp;
-    
-    for (int i = 0; i < indiv.longIndiv; i++) {
-        res += HEAD(bits) * power;
-        power *= 2;
-        bits = RESTE(bits);
-    }
-    freeBit(tmp);
+
     return res;
 }
 
