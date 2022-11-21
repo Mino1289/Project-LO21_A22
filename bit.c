@@ -13,9 +13,9 @@ uchar generateBit() {
 /**
  * @brief Affichage de la liste de bits récursivement
  * 
- * @param bits Bit* - liste de bits
+ * @param bits Bits  - liste de bits
  */
-void printBits(Bit *bits) {
+void printBits(Bits bits) {
     if (!EMPTY(bits)) {
         printf("%d", HEAD(bits));
         printBits(RESTE(bits));
@@ -29,8 +29,8 @@ void printBits(Bit *bits) {
  * 
  * @param size unsigned int - taille de la liste de bits
  */
-Bit *initIterBits(uint size) {
-    Bit *bits = NULL;
+Bits initIterBits(uint size) {
+    Bits bits = NULL;
     for (uint i = 0; i < size; i++) {
         bits = ajouterBit_tete(bits, generateBit());
     }
@@ -42,7 +42,7 @@ Bit *initIterBits(uint size) {
  * 
  * @param size unsigned int - taille de la liste de bits
  */
-Bit *initRecurBits(uint size) {
+Bits initRecurBits(uint size) {
     if (!size) {
         return NULL;
     } else {
@@ -53,10 +53,10 @@ Bit *initRecurBits(uint size) {
 /**
  * @brief Donne la taille d'une liste de bits, récursivement
  * 
- * @param bit Bit* - liste de bits
+ * @param bit Bits - liste de bits
  * @return unsigned int 
  */
-uint longueurBit(Bit *bit) {
+uint longueurBit(Bits bit) {
     if (bit == NULL) {
         return 0;
     }
@@ -66,12 +66,12 @@ uint longueurBit(Bit *bit) {
 /**
  * @brief ajout d'un bit en tête d'une liste de bits
  * 
- * @param bit Bit* - liste de bits
+ * @param bit Bits - liste de bits
  * @param bitVal unsigned char - valeur du bit à ajouter
- * @return Bit* 
+ * @return Bits 
  */
-Bit* ajouterBit_tete(Bit *bit, uchar bitVal) {
-    Bit *newBit = (Bit*)malloc(sizeof(Bit));
+Bits ajouterBit_tete(Bits bit, uchar bitVal) {
+    Bits newBit = (Bits) malloc(sizeof(Bit));
     newBit->val = bitVal;
     newBit->next = bit;
     return newBit;
@@ -80,18 +80,18 @@ Bit* ajouterBit_tete(Bit *bit, uchar bitVal) {
 /**
  * @brief ajout d'un bit en queue d'une liste de bits
  * 
- * @param bit Bit* - liste de bits
+ * @param bit Bits - liste de bits
  * @param bitVal unsigned char - valeur du bit à ajouter
- * @return Bit* 
+ * @return Bits 
  */
-Bit *ajouterBit_queue(Bit *bit, uchar bitVal) {
-    Bit *newBit = (Bit*)malloc(sizeof(Bit));
+Bits ajouterBit_queue(Bits bit, uchar bitVal) {
+    Bits newBit = (Bits)malloc(sizeof(Bit));
     newBit->val = bitVal;
     newBit->next = NULL;
     if (bit == NULL) {
         return newBit;
     }
-    Bit *tmp = bit;
+    Bits tmp = bit;
     while (tmp->next != NULL) {
         tmp = tmp->next;
     }
@@ -102,14 +102,14 @@ Bit *ajouterBit_queue(Bit *bit, uchar bitVal) {
 /**
  * @brief Supprime un bit en tête d'une liste de bits
  * 
- * @param bits Bit* - liste de bits
- * @return Bit* 
+ * @param bits Bits - liste de bits
+ * @return Bits 
  */
-Bit *supprimerBit_tete(Bit *bits) {
+Bits supprimerBit_tete(Bits bits) {
     if (bits == NULL) {
         return NULL;
     }
-    Bit *tmp = bits->next;
+    Bits tmp = bits->next;
     free(bits);
     return tmp;
 }
@@ -117,17 +117,17 @@ Bit *supprimerBit_tete(Bit *bits) {
 /**
  * @brief Supprime un bit en queue d'une liste de bits
  * 
- * @param bits Bit* - liste de bits
- * @return Bit* 
+ * @param bits Bits - liste de bits
+ * @return Bits 
  */
-Bit *supprimerBit_queue(Bit *bits) {
+Bits supprimerBit_queue(Bits bits) {
     if (EMPTY(bits)) {
         return NULL;
     } else if (EMPTY(RESTE(bits))) {
         free(bits);
         return NULL;
     } else {
-        Bit *tmp = bits;
+        Bits tmp = bits;
         while (!EMPTY(RESTE(RESTE(bits)))) {
             tmp = RESTE(tmp);
         }
@@ -140,14 +140,14 @@ Bit *supprimerBit_queue(Bit *bits) {
 /**
  * @brief Croise deux listes de bits avec une probabilité de croisement
  * 
- * @param bit1 Bit * - liste de bit à croiser
- * @param bit2 Bit * - liste de bit à croiser
+ * @param bit1 Bits  - liste de bit à croiser
+ * @param bit2 Bits  - liste de bit à croiser
  * @param pCroise float - probabilité de croisement
  * @return DeuxBit 
  */
-DeuxBit croisementBits(Bit *bit1, Bit *bit2, float pCroise) {
-    Bit *tmp1 = bit1, *tmp2 = bit2;
-    Bit *croise1 = NULL, *croise2 = NULL;
+DeuxBit croisementBits(Bits bit1, Bits bit2, float pCroise) {
+    Bits tmp1 = bit1, tmp2 = bit2;
+    Bits croise1 = NULL, croise2 = NULL;
     while (!EMPTY(tmp1) && !EMPTY(tmp2)) {
         if (rand() % 100 < pCroise * 100) {
             croise1 = ajouterBit_queue(croise1, HEAD(tmp1));
@@ -167,11 +167,11 @@ DeuxBit croisementBits(Bit *bit1, Bit *bit2, float pCroise) {
 /**
  * @brief Alloue et Copie une liste de bits
  * 
- * @param bit Bit* - liste de bits à copier
- * @return Bit* 
+ * @param bit Bits - liste de bits à copier
+ * @return Bits 
  */
-Bit *copyBit(Bit *bit) {
-    Bit *newBit = NULL;
+Bits copyBit(Bits bit) {
+    Bits newBit = NULL;
     while (!EMPTY(bit)) {
         newBit = ajouterBit_queue(newBit, HEAD(bit));
         bit = RESTE(bit);
@@ -182,11 +182,11 @@ Bit *copyBit(Bit *bit) {
 /**
  * @brief Free une liste de bits récursivement
  * 
- * @param bits Bit* - liste de bits
+ * @param bits Bits - liste de bits
  */
-void freeBit(Bit *bits) {
+void freeBit(Bits bits) {
     if (!EMPTY(bits)) {
-        DEBUGPRINT("\t\tFREE Bit at %p\n", (void*) bits);
+        DEBUGPRINT("\t\tFREE Bit at %p\n", (void *) bits);
         freeBit(RESTE(bits));
         free(bits);
     }

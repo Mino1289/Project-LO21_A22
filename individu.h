@@ -7,87 +7,89 @@
  * @brief Structure d'un individu
  * 
  * @param longIndiv unsigned int - taille de la liste de bits
- * @param bits Bit* - liste de bits
+ * @param bits Bits  - liste de bits
  * @param next Individu* - pointeur vers le prochain individu
  */
 typedef struct _elem_Individu {
     uint longIndiv;
-    Bit *bits;
+    Bits bits;
     struct _elem_Individu *next;
 } Individu;
+
+typedef Individu* Individus;
 
 
 /**
  * @brief Affiche la liste d'individus récursivement
  * 
- * @param indiv Individu* - liste d'individus
+ * @param indiv Individus - liste d'individus
  */
-void printIndiv(Individu *indiv);
+void printIndiv(Individus indiv);
 
 /**
  * @brief Affiche 1 individu
  * 
- * @param indiv Individu* - liste d'individus
+ * @param indiv Individus - liste d'individus
  */
-void print1Indiv(Individu *indiv);
+void print1Indiv(Individus indiv);
 
 /**
  * @brief ajout d'un individu en tête d'une liste d'individus
  * 
- * @param indiv Individu* - liste d'individu
+ * @param indiv Individus - liste d'individu
  * @param size unsigned int - taille de la liste de bits
- * @return Individu* 
+ * @return Individus  
  */
-Individu *ajouterIndiv_tete(Individu *indiv, uint size);
+Individus ajouterIndiv_tete(Individus indiv, uint size);
 
 /**
  * @brief ajout d'un individu en queue d'une liste d'individus
  * 
- * @param indiv Individu* - liste d'individu
+ * @param indiv Individus - liste d'individu
  * @param size unsigned int - taille de la liste de bits
- * @return Individu* 
+ * @return Individus  
  */
-Individu *ajouterIndiv_queue(Individu *indiv, uint size);
+Individus ajouterIndiv_queue(Individus indiv, uint size);
 
 /**
  * @brief Supprime un individu en tête d'une liste d'individus
  * 
- * @param l Individu* - liste d'individus
+ * @param l Individus - liste d'individus
  * @return Individu* 
  */
-Individu *supprimerIndiv_tete(Individu *l);
+Individus supprimerIndiv_tete(Individus l);
 
 /**
  * @brief Supprime un individu en queue d'une liste d'individus
  * 
- * @param l Individu* - liste d'individus
- * @return Individu* 
+ * @param l Individus - liste d'individus
+ * @return Individus  
  */
-Individu *supprimerIndiv_queue(Individu *l);
+Individus supprimerIndiv_queue(Individus l);
 
 /**
  * @brief ajout d'un individu en tête d'une liste d'individus
  * 
- * @param indiv Individu* - liste d'individu
- * @param bits Bit* - liste de bits
- * @return Individu* 
+ * @param indiv Individus - liste d'individu
+ * @param bits Bits - liste de bits
+ * @return Individus  
  */
-Individu *ajouterIndivWithBits_tete(Individu *indiv, Bit *bits);
+Individus ajouterIndivWithBits_tete(Individus indiv, Bits bits);
 
 /**
  * @brief ajout d'un individu en queue d'une liste d'individus
  * 
- * @param indiv Individu* - liste d'individu
- * @param bits Bit* - liste de bits
- * @return Individu* 
+ * @param indiv Individus - liste d'individu
+ * @param bits Bits - liste de bits
+ * @return Individus  
  */
-Individu *ajouterIndivWithBits_queue(Individu *indiv, Bit *bits);
+Individus ajouterIndivWithBits_queue(Individus indiv, Bits bits);
 
 /**
  * @brief Récupère le dernier individu d'une liste d'individus 
  * 
- * @param indiv Individu* - liste d'individus
- * @return Individu* 
+ * @param indiv Individus - liste d'individus
+ * @return Individus  
  */
 Individu* lastIndiv(Individu* indiv);
 
@@ -95,9 +97,9 @@ Individu* lastIndiv(Individu* indiv);
  * @brief Initialisation d'un individu
  * 
  * @param longIndiv int - taille de la liste de bits
- * @return Individu* 
+ * @return Individus  
  */
-Individu *initIndividu(uint longIndiv);
+Individus initIndividu(uint longIndiv);
 
 /**
  * @brief Décode un individu
@@ -110,38 +112,38 @@ uint decodeIndividu(Individu indiv);
 /**
  * @brief Partionnement de la liste d'individus en deux listes d'individus 
  *  
- * @param first Individu* - premier individu de la liste
- * @param last Individu* - dernier individu de la liste
+ * @param first Individus - premier individu de la liste
+ * @param last Individus - dernier individu de la liste
  * @param a float - parametre de la fonction d'évaluation
  * @param b float - parametre de la fonction d'évaluation
  * @param *f float - fonction d'évaluation
  *  
- * @return Individu* - le pointeur sur l'élément "charnière"
+ * @return Individus  - le pointeur sur l'élément "charnière"
  */
-Individu *partition(Individu *first, Individu *last, float a, float b, float (*f)(float x));
+Individus partition(Individus first, Individus last, float a, float b, float (*f)(float x));
 
 /**
  * @brief Tri rapide d'une liste d'individus récursif dans l'ordre décroissant.
  * 
- * @param first Individu* - premier individu de la liste
- * @param last Individu* - dernier individu de la liste
+ * @param first Individus - premier individu de la liste
+ * @param last Individus - dernier individu de la liste
  * @param a float - parametre de la fonction d'évaluation
  * @param b float - parametre de la fonction d'évaluation
  * @param *f float - fonction d'évaluation
  *  
  */
-void quicksortIndiv(Individu *first, Individu *last, float a, float b, float (*f)(float x));
+void quicksortIndiv(Individus first, Individus last, float a, float b, float (*f)(float x));
 
 /**
  * @brief Calcule la qualité d'un individu
  * 
- * @param indiv Individu* - individu à évaluer
+ * @param indiv Individus - individu à évaluer
  * @param a float - borne inférieure
  * @param b float - borne supérieure
  * @param *f float - fonction d'évaluation 
  * @return float 
  */
-float qualiteIndividu(Individu *indiv, float a, float b, float (*f)(float x));
+float qualiteIndividu(Individus indiv, float a, float b, float (*f)(float x));
 
 /**
  * @brief Fonction d'évaluation pour la qualité d'un individu 
@@ -164,8 +166,8 @@ float f2(float x);
 /**
  * @brief Free une liste d'individus récursivement
  * 
- * @param indiv Individu* - liste d'individus
+ * @param indiv Individus - liste d'individus
  */
-void freeIndividu(Individu *indiv);
+void freeIndividu(Individus indiv);
 
 #endif // __INDIVIDU_H__

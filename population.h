@@ -14,7 +14,7 @@
  * @param taille int - Taille de la population
  */
 typedef struct Population {
-    Individu *individus;
+    Individus individus;
     int taille;
 } Population;
 

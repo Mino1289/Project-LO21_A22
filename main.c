@@ -41,13 +41,12 @@ int main(int argc, char* argv[]) {
 	// Fin 
 	quicksortPopulation(p, A, B, F); // on trie pour afficher le meilleur individu
 	// Afficher le meilleur Individu de la Population
-	printf("Meilleur individu : ");
+	printf("\nMeilleur individu :\n");
 	printf("Valeur\t->\tQualité\t\tBits\n");
 	print1Indiv(p.individus);
 
 	freeIndividu(p.individus);
 
-	printf("Fin du programme\n");
-
+	DEBUGPRINT("Fin du programme\n");
 	return EXIT_SUCCESS;
 }
