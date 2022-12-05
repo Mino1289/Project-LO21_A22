@@ -35,15 +35,17 @@ typedef struct Evaluation {
  * @brief Affiche la liste d'individus récursivement
  * 
  * @param indiv Individus - liste d'individus
+ * @param eval Evaluation - structure d'évaluation
  */
-void printIndiv(Individus indiv);
+void printIndiv(Individus indiv, Evaluation eval);
 
 /**
  * @brief Affiche 1 individu
  * 
  * @param indiv Individus - liste d'individus
+ * @param eval Evaluation - structure d'évaluation
  */
-void print1Indiv(Individus indiv);
+void print1Indiv(Individus indiv, Evaluation eval);
 
 /**
  * @brief ajout d'un individu en tête d'une liste d'individus

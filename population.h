@@ -22,8 +22,9 @@ typedef struct Population {
  * @brief Affiche la population
  * 
  * @param population Population - Population à afficher
+ * @param eval Evaluation - Structure d'évaluation
  */
-void printPopulation(Population population);
+void printPopulation(Population population, Evaluation eval);
 
 /**
  * @brief Initialise une population de taille donnée

@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 	// Afficher le meilleur Individu de la Population
 	printf("\nMeilleur individu :\n");
 	printf("Valeur\t->\tQualité\t\tBits\n");
-	print1Indiv(p.individus);
+	print1Indiv(p.individus, eval);
 
 	freeIndividu(p.individus);
 

@@ -3,9 +3,10 @@
 /**
  * @brief Affiche la liste de population
  *
- * @param population
+ * @param population Population - liste de population
+ * @param eval Evaluation - structure d'évaluation
  */
-void printPopulation(Population population) {
+void printPopulation(Population population, Evaluation eval) {
     Individu* indiv = population.individus;
     int i = 1;
     printf("Population de taille %d.\n", population.taille);
@@ -15,7 +16,7 @@ void printPopulation(Population population) {
     while (!EMPTY(indiv)) {
         printf("Individu n°%d\t", i);
         // printf("%d\t->\t%f\t0b", decodeIndividu(*indiv), qualiteIndividu(indiv, A, B, F));
-        print1Indiv(indiv);
+        print1Indiv(indiv, eval);
         indiv = RESTE(indiv);
         ++i;
     }

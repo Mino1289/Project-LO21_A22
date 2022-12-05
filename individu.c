@@ -5,11 +5,11 @@
  * 
  * @param indiv Individus - liste d'individus
  */
-void printIndiv(Individus indiv) {
+void printIndiv(Individus indiv, Evaluation eval) {
     if (!EMPTY(indiv)) {
-        printf("%d\t->\t%f\t0b", decodeBit(indiv->bits), qualiteIndividu(indiv, (Evaluation) {A, B, F}));
+        printf("%d\t->\t%f\t0b", decodeBit(indiv->bits), qualiteIndividu(indiv, eval));
         printBits(indiv->bits);
-        printIndiv(indiv->next);
+        printIndiv(indiv->next, eval);
     }
 }
 
@@ -18,9 +18,9 @@ void printIndiv(Individus indiv) {
  * 
  * @param indiv Individus - liste d'individus
  */
-void print1Indiv(Individus indiv) {
+void print1Indiv(Individus indiv, Evaluation eval) {
     if (!EMPTY(indiv)) {
-        printf("%d\t->\t%f\t0b", decodeBit(indiv->bits), qualiteIndividu(indiv, (Evaluation) {A, B, F}));
+        printf("%d\t->\t%f\t0b", decodeBit(indiv->bits), qualiteIndividu(indiv, eval));
         printBits(indiv->bits);
     }
 }
