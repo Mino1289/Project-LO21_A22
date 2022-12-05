@@ -14,10 +14,10 @@
 #define POW2(x)         (1 << (x))
 #define ABS(a)          ((a) < 0 ? -(a) : (a))
 #define MAX(a, b)       ((a + b + ABS(a-b)) / 2)
-#define MIN(a, b)       ((a) < (b) ? (a) : (b))
+#define MIN(a, b)       ((a + b - ABS(a-b)) / 2)
 #define SWAP(a, b, T)   {T tmp = a; a = b; b = tmp;}
 
-#define EMPTY(l)        (!l)
+#define EMPTY(l)        (!(l))
 #define HEAD(l)         ((l)->val)
 #define RESTE(l)        ((l)->next)
 
@@ -44,6 +44,12 @@ typedef struct _elem_Bit {
 
 typedef Bit* Bits;
 
+/**
+ * @brief Produit cartésien de deux listes de bits
+ * 
+ * @param bit1 Bits - liste de bits
+ * @param bit2 Bits - liste de bits
+ */
 typedef struct {
     Bits bit1;
     Bits bit2;
@@ -107,20 +113,12 @@ Bits ajouterBit_tete(Bits bit, uchar bitVal);
 Bits ajouterBit_queue(Bits bit, uchar bitVal);
 
 /**
- * @brief Supprime un bit en tête d'une liste de bits
+ * @brief Décode une liste de Bit en un nombre
  * 
- * @param bits Bits  - liste de bits
- * @return Bits  
+ * @param bits Bits - liste de Bit à décoder
+ * @return unsigned int 
  */
-Bits supprimerBit_tete(Bits bits);
-
-/**
- * @brief Supprime un bit en queue d'une liste de bits
- * 
- * @param bits Bits  - liste de bits
- * @return Bits  
- */
-Bits supprimerBit_queue(Bits bits);
+uint decodeBit(Bits bits);
 
 /**
  * @brief Croise deux listes de bits avec une probabilité de croisement

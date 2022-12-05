@@ -57,7 +57,7 @@ Bits initRecurBits(uint size) {
  * @return unsigned int 
  */
 uint longueurBit(Bits bit) {
-    if (bit == NULL) {
+    if (EMPTY(bit)) {
         return 0;
     }
     return 1 + longueurBit(RESTE(bit));
@@ -100,41 +100,18 @@ Bits ajouterBit_queue(Bits bit, uchar bitVal) {
 }
 
 /**
- * @brief Supprime un bit en tête d'une liste de bits
+ * @brief Décode une liste de Bit en un nombre
  * 
- * @param bits Bits - liste de bits
- * @return Bits 
+ * @param bits Bits - liste de Bit à décoder
+ * @return unsigned int 
  */
-Bits supprimerBit_tete(Bits bits) {
-    if (bits == NULL) {
-        return NULL;
+uint decodeBit(Bits bits) {
+    int res = 0;
+    while (!EMPTY(bits)) {
+        res = res * 2 + HEAD(bits);
+        bits = RESTE(bits);
     }
-    Bits tmp = bits->next;
-    free(bits);
-    return tmp;
-}
-
-/**
- * @brief Supprime un bit en queue d'une liste de bits
- * 
- * @param bits Bits - liste de bits
- * @return Bits 
- */
-Bits supprimerBit_queue(Bits bits) {
-    if (EMPTY(bits)) {
-        return NULL;
-    } else if (EMPTY(RESTE(bits))) {
-        free(bits);
-        return NULL;
-    } else {
-        Bits tmp = bits;
-        while (!EMPTY(RESTE(RESTE(bits)))) {
-            tmp = RESTE(tmp);
-        }
-        free(RESTE(tmp));
-        RESTE(tmp) = NULL;
-        return bits;
-    }
+    return res;
 }
 
 /**
