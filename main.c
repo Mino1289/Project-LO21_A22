@@ -7,6 +7,12 @@ int main(int argc, char* argv[]) {
 	srand(seed);
 	DEBUGPRINT("Seed: %ld\n", seed);
 
+	Evaluation eval = {
+		.a = A,
+		.b = B,
+		.f = F,
+	};
+
 
 	// -Longueur d'un individu : longIndiv = 8 
 	// -Probabilité de croisement : pCroise = 0.5 
@@ -16,9 +22,9 @@ int main(int argc, char* argv[]) {
 
 	uint longIndiv = 16;
 	float pCroise = 0.5;
-	uint taillePop = get_integer_input("Quelle taille de population souhaitez-vous ? (8-256): ", 20, 200);
+	uint taillePop = get_integer_input("Quelle taille de population souhaitez-vous ? (8-256000): ", 8, 256000);
 	float tSelectp = get_float_input("Quel taux de sélection souhaitez-vous ? (0.1-0.9): ", 0.1, 0.9);
-	uint nGen = get_integer_input("Combien de génération souhaitez-vous ? (4-256): ", 20, 200);
+	uint nGen = get_integer_input("Combien de génération souhaitez-vous ? (4-25600): ", 4, 256000);
 	
 	uint tSelect = tSelectp*taillePop; 
 	// on préfère le nombre qu'un pourcentage de la population
@@ -35,11 +41,11 @@ int main(int argc, char* argv[]) {
 		// Trier la Population 
 		// quicksortPopulation(p); // pas besoin de trier, c'est fait dans select
 		// Sélectionner la Population 
-		p = selectPopulation(tmp, tSelect, A, B, F);
-		freeIndividu(tmp.individus);
+		selectPopulation(tmp, tSelect, eval);
+		p = tmp;
 	}
 	// Fin 
-	quicksortPopulation(p, A, B, F); // on trie pour afficher le meilleur individu
+	quicksortPopulation(p, eval); // on trie pour afficher le meilleur individu
 	// Afficher le meilleur Individu de la Population
 	printf("\nMeilleur individu :\n");
 	printf("Valeur\t->\tQualité\t\tBits\n");

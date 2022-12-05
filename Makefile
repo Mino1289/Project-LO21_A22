@@ -1,5 +1,5 @@
 CXX = gcc
-CFLAGS = -Wall -Werror -fpic -pedantic 
+CFLAGS = -Wall -Werror -fpic -pedantic
 LIBSDIR = -L.
 INCLUDEDIR = -I.
 
@@ -15,7 +15,7 @@ ifeq ($(OS), Windows_NT)
 	LIBTARGET :=$(LIBCORENAME:=.dll)
 	CLEANCMD = @del /q *.o *.dll *.exe *.so main.txt
 else
-	EXPORT = sh export.sh
+	EXPORT = export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
 	LIBTARGET :=lib$(LIBCORENAME:=.so)
 	LIBSDIR += -L/usr/lib
 	INCLUDEDIR += -I/usr/include
@@ -34,7 +34,8 @@ EXESOURCEOFILE = $(EXESOURCE:=.o)
 all: $(TARGET)
 
 run: $(TARGET)
-	$(EXPORT) $(TARGET)
+	$(EXPORT) 
+	$(TARGET)
 
 $(TARGET): $(EXESOURCEOFILE) $(LIBTARGET) 
 	$(CXX) $(EXESOURCEOFILE) -l$(LIBCORENAME) $(LIBSDIR) -o $(TARGET) -lm
@@ -44,6 +45,10 @@ $(LIBTARGET): $(LIBSOURCEOFILE)
 
 .c.o:
 	$(CXX) $(CFLAGS) $(INCLUDEDIR) -c -o $@ $<
+
+test: $(TARGET)
+	$(EXPORT)
+	valgrind --track-origins=yes -s ./$(TARGET)
 
 clean: 
 	$(CLEANCMD)

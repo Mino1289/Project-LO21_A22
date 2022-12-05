@@ -7,7 +7,7 @@
  */
 void printIndiv(Individus indiv) {
     if (!EMPTY(indiv)) {
-        printf("%d\t->\t%f\t0b", decodeIndividu(*indiv), qualiteIndividu(indiv, A, B, F));
+        printf("%d\t->\t%f\t0b", decodeBit(indiv->bits), qualiteIndividu(indiv, (Evaluation) {A, B, F}));
         printBits(indiv->bits);
         printIndiv(indiv->next);
     }
@@ -20,7 +20,7 @@ void printIndiv(Individus indiv) {
  */
 void print1Indiv(Individus indiv) {
     if (!EMPTY(indiv)) {
-        printf("%d\t->\t%f\t0b", decodeIndividu(*indiv), qualiteIndividu(indiv, A, B, F));
+        printf("%d\t->\t%f\t0b", decodeBit(indiv->bits), qualiteIndividu(indiv, (Evaluation) {A, B, F}));
         printBits(indiv->bits);
     }
 }
@@ -39,62 +39,6 @@ Individus ajouterIndiv_tete(Individus indiv, uint size) {
 }
 
 /**
- * @brief ajout d'un individu en queue d'une liste d'individus
- * 
- * @param indiv Individus - liste d'individu
- * @param size unsigned int - taille de la liste de bits
- * @return Individus  
- */
-Individus ajouterIndiv_queue(Individus indiv, uint size) {
-    Individus newIndiv = initIndividu(size);
-    if (EMPTY(indiv)) {
-        return newIndiv;
-    }
-    Individus tmp = lastIndiv(indiv);
-    tmp->next = newIndiv;
-    return indiv;
-}
-
-/**
- * @brief Supprime un individu en tête d'une liste d'individus
- * 
- * @param indiv Individus - liste d'individus
- * @return Individus  
- */
-Individus supprimerIndiv_tete(Individus indiv) {
-    if (EMPTY(indiv)) {
-        return NULL;
-    } else {
-        Individus tmp = RESTE(indiv);
-        free(indiv);
-        return tmp;
-    }
-}
-
-/**
- * @brief Supprime un individu en queue d'une liste d'individus
- * 
- * @param indiv Individus - liste d'individus
- * @return Individus  
- */
-Individus supprimerIndiv_queue(Individus indiv) {
-    if (EMPTY(indiv)) {
-        return NULL;
-    } else if (EMPTY(RESTE(indiv))) {
-        free(indiv);
-        return NULL;
-    } else {
-        Individus tmp = indiv;
-        while (!EMPTY(RESTE(RESTE(indiv)))) {
-            tmp = RESTE(tmp);
-        }
-        free(RESTE(tmp));
-        RESTE(tmp) = NULL;
-        return indiv;
-    }
-}
-
-/**
  * @brief ajout d'un individu en tête d'une liste d'individus
  * 
  * @param indiv Individus - liste d'individu
@@ -102,7 +46,7 @@ Individus supprimerIndiv_queue(Individus indiv) {
  * @return Individus  
  */
 Individus ajouterIndivWithBits_tete(Individus indiv, Bits bits) {
-    Individus newIndiv = malloc(sizeof(Individu));
+    Individus newIndiv = (Individus) malloc(sizeof(Individu));
     newIndiv->bits = bits;
     newIndiv->next = indiv;
     newIndiv->longIndiv = longueurBit(bits);
@@ -117,7 +61,7 @@ Individus ajouterIndivWithBits_tete(Individus indiv, Bits bits) {
  * @return Individus  
  */
 Individus ajouterIndivWithBits_queue(Individus indiv, Bits bits) {
-    Individus newIndiv = malloc(sizeof(Individu));
+    Individus newIndiv = (Individus) malloc(sizeof(Individu));
     newIndiv->bits = bits;
     newIndiv->next = NULL;
     newIndiv->longIndiv = longueurBit(bits);
@@ -135,7 +79,7 @@ Individus ajouterIndivWithBits_queue(Individus indiv, Bits bits) {
  * @param indiv Individus - liste d'individus
  * @return Individus  
  */
-Individus lastIndiv(Individu* indiv) {
+Individus lastIndiv(Individus indiv) {
     Individus tmp = indiv;
     while(!EMPTY(tmp) && !EMPTY(RESTE(tmp))) {
         tmp = RESTE(tmp);
@@ -150,47 +94,28 @@ Individus lastIndiv(Individu* indiv) {
  * @return Individus  
  */
 Individus initIndividu(uint longIndiv) {
-    Individus indiv = (Individu*) malloc(sizeof(Individu));
+    Individus indiv = (Individus) malloc(sizeof(Individu));
     indiv->longIndiv = longIndiv;
     indiv->next = NULL;
     indiv->bits = initRecurBits(longIndiv);
     return indiv;
 }
 
-/**
- * @brief Décode un individu (convertit une liste de bits en un nombre)
- * 
- * @param indiv Individu - individu à décoder
- * @return unsigned int 
- */
-uint decodeIndividu(Individu indiv) {
-    int res = 0;
-    Bits bits = indiv.bits; 
-
-    while (!EMPTY(bits)) {
-        res = res * 2 + HEAD(bits);
-        bits = RESTE(bits);
-    }
-
-    return res;
-}
 
 /**
  * @brief Partionnement de la liste d'individus en deux listes d'individus 
  *  
  * @param first Individus - premier individu de la liste
  * @param last Individus - dernier individu de la liste
- * @param a float - parametre de la fonction d'évaluation
- * @param b float - parametre de la fonction d'évaluation
- * @param *f float - fonction d'évaluation
+ * @param eval Evaluation - structure d'évaluation
  *  
  * @return Individu* - le pointeur sur l'élément "charnière"
  */
-Individus partition(Individus first, Individus last, float a, float b, float (*f)(float x)) {
+Individus partition(Individus first, Individus last, Evaluation eval) {
 	Individus pivot = first;
 	Individus front = first;
 	while (!EMPTY(front) && front != last) {
-		if (qualiteIndividu(front, a, b, f) > qualiteIndividu(last, a, b, f)) {
+		if (qualiteIndividu(front, eval) > qualiteIndividu(last, eval)) {
 			pivot = first;
 
 			SWAP(first->bits, front->bits, Bits);
@@ -210,22 +135,20 @@ Individus partition(Individus first, Individus last, float a, float b, float (*f
  * 
  * @param first Individus - premier individu de la liste
  * @param last Individus - dernier individu de la liste
- * @param a float - parametre de la fonction d'évaluation
- * @param b float - parametre de la fonction d'évaluation
- * @param *f float - fonction d'évaluation
+ * @param eval Evaluation - structure d'évaluation
  */
-void quicksortIndiv(Individus first, Individus last, float a, float b, float (*f)(float x)) {
+void quicksortIndiv(Individus first, Individus last, Evaluation eval) {
 	if (first == last) {
 		return;
 	}
-	Individus pivot = partition(first, last, a, b, f); // "effectue la coupe en 2 parties et renvoie le pointeur sur l'élément charnière"
+	Individus pivot = partition(first, last, eval); // "effectue la coupe en 2 parties et renvoie le pointeur sur l'élément charnière"
 
 	if (!EMPTY(pivot) && !EMPTY(RESTE(pivot))) {
-		quicksortIndiv(RESTE(pivot), last, a, b, f);
+		quicksortIndiv(RESTE(pivot), last, eval);
 	}
 
 	if (!EMPTY(pivot) && first != pivot) {
-		quicksortIndiv(first, pivot, a, b, f);
+		quicksortIndiv(first, pivot, eval);
 	}
 }
 
@@ -233,14 +156,12 @@ void quicksortIndiv(Individus first, Individus last, float a, float b, float (*f
  * @brief Calcule la qualité d'un individu
  * 
  * @param indiv Individus - individu à évaluer
- * @param a float - borne inférieure
- * @param b float - borne supérieure
- * @param *f float - fonction d'évaluation 
+ * @param eval Evaluation - structure d'évaluation
  * @return float 
  */
-float qualiteIndividu(Individus indiv, float a, float b, float (*f)(float x)) {
-    float X = (decodeIndividu(*indiv))/((float)(POW2(indiv->longIndiv)))*(b-a)+a;
-    return -f(X);
+float qualiteIndividu(Individus indiv, Evaluation eval) {
+    float X = (decodeBit(indiv->bits))/((float)(POW2(indiv->longIndiv)))*(eval.b-eval.a)+eval.a;
+    return eval.f(X);
 }
 
 /**

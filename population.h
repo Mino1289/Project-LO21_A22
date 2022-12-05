@@ -10,7 +10,7 @@
 /**
  * @brief Structure de population
  * 
- * @param individus Individu* - Liste chainée des individus de la population (premier individu)
+ * @param individus Individus - Liste chainée des individus de la population (premier individu)
  * @param taille int - Taille de la population
  */
 typedef struct Population {
@@ -38,30 +38,25 @@ Population initPopulation(int taille, int sizeIndiv);
  * @brief Trie la population dans l'ordre décroissant de la qualité des individus
  * 
  * @param population Population - Population d'individus à trier par rapport à leur qualité
- * @param a float - parametre de la fonction d'évaluation
- * @param b float - parametre de la fonction d'évaluation
- * @param *f float - fonction d'évaluation
+ * @param eval Evaluation - structure d'évaluation
  */
-void quicksortPopulation(Population population, float a, float b, float (*f)(float x));
+void quicksortPopulation(Population population, Evaluation eval);
 
 /**
  * @brief Sélectionne les meilleurs éléments de la population
  * 
  * @param population Population - Population à sélectionner
  * @param tselect int - Nombre d'éléments à sélectionner et à recopier à la suite  (ne doit pas être plus grand que la taille de la population)
- * @param a float - parametre de la fonction d'évaluation
- * @param b float - parametre de la fonction d'évaluation
- * @param *f float - fonction d'évaluation
- * 
- * @return Population 
+ * @param eval Evaluation - structure d'évaluation
  */
-Population selectPopulation(Population population, int tselect, float a, float b, float (*f)(float x));
+void selectPopulation(Population population, int tselect, Evaluation eval);
 
 /**
  * @brief Croisement de la population, selection aléatoire de deux individus et croisement entre eux puis ajout à la nouvelle population
  * 
  * @param population Population - Population à croiser
  * @param pCroise float - Probabilité de croisement entre les individus
+ * 
  * @return Population 
  */
 Population croisementPopulation(Population population, float pCroise);

@@ -11,7 +11,7 @@ void printPopulation(Population population) {
     printf("Population de taille %d.\n", population.taille);
     printf("Individus de taille %d.\n\n", population.individus->longIndiv);
 
-    printf("Individu n°k\tDecode\t->\tQualité\t0b.bits..\n\n");
+    printf("Individu n°k\tDecode\t->\tQualité\t\t0b.bits..\n\n");
     while (!EMPTY(indiv)) {
         printf("Individu n°%d\t", i);
         // printf("%d\t->\t%f\t0b", decodeIndividu(*indiv), qualiteIndividu(indiv, A, B, F));
@@ -44,13 +44,11 @@ Population initPopulation(int taille, int sizeIndiv) {
  * @brief Trie la population dans l'ordre décroissant de la qualité des individus
  *
  * @param population Population - Population d'individus à trier par rapport à leur qualité
- * @param a float - parametre de la fonction d'évaluation
- * @param b float - parametre de la fonction d'évaluation
- * @param *f float - fonction d'évaluation
+ * @param eval Evaluation - structure d'évaluation
  */
-void quicksortPopulation(Population population, float a, float b, float (*f)(float x)) {
+void quicksortPopulation(Population population, Evaluation eval) {
     Individu* tmp = lastIndiv(population.individus);
-    quicksortIndiv(population.individus, tmp, a, b, f);
+    quicksortIndiv(population.individus, tmp, eval);
 }
 
 /**
@@ -58,47 +56,37 @@ void quicksortPopulation(Population population, float a, float b, float (*f)(flo
  *
  * @param population Population - Population à sélectionner
  * @param tselect int - Nombre d'éléments à sélectionner et à recopier à la suite  (ne doit pas être plus grand que la taille de la population)
- * @param a float - parametre de la fonction d'évaluation
- * @param b float - parametre de la fonction d'évaluation
- * @param *f float - fonction d'évaluation
+ * @param eval Evaluation - structure d'évaluation
  *
  * @return Population
  */
-Population selectPopulation(Population population, int tselect, float a, float b, float (*f)(float x)) {
+void selectPopulation(Population population, int tselect, Evaluation eval) {
     if (tselect > population.taille) {
-        return copyPopulation(population);
+        return;
     }
-    Population population2;
-    population2.taille = population.taille;
-    population2.individus = NULL;
+    quicksortPopulation(population, eval);
 
-    quicksortPopulation(population, a, b, f);
-
-    Individu* indiv = population.individus, * tmp = NULL;
-    Bits bits = NULL;
-
-    for (int i = 0; i < tselect; ++i) {
-        bits = copyBit(indiv->bits);
-        population2.individus = ajouterIndivWithBits_queue(population2.individus, bits);
-        indiv = RESTE(indiv);
-    }
-    indiv = population2.individus;
-    tmp = indiv;
-
-    int i = tselect, j = 0;
-    while (i < population2.taille) {
-        bits = copyBit(indiv->bits);
-        population2.individus = ajouterIndivWithBits_queue(population2.individus, bits);
-        indiv = RESTE(indiv);
+    Individus tmp = population.individus, indiv = population.individus;
+    int i = 1;
+    while (i < tselect) {
+        tmp = RESTE(tmp);
         ++i;
-        ++j;
-        if (j == tselect) {
-            j = 0;
-            indiv = tmp;
-        }
     }
+    freeIndividu(RESTE(tmp)); // On libère la mémoire des Individus qui ne sont pas sélectionnés
+    RESTE(tmp) = NULL; 
+    tmp = population.individus;
 
-    return population2;
+    i = 0;
+    while (i < population.taille - tselect) {
+        tmp = ajouterIndivWithBits_queue(tmp, copyBit(indiv->bits));
+
+        if (i == tselect - 1) {
+            indiv = population.individus;
+        } else {
+            indiv = RESTE(indiv);
+        }
+        ++i;
+    }
 }
 
 /**
@@ -122,7 +110,7 @@ Population croisementPopulation(Population population, float pCroise) {
             deux = rand() % population2.taille;
         }
 
-        Individu* tmp = population.individus, * indiv1 = NULL, * indiv2 = NULL;
+        Individus tmp = population.individus, indiv1 = NULL, indiv2 = NULL;
         for (int i = 0; i <= MAX(prem, deux); ++i) {
             if (prem == i) {
                 indiv1 = tmp;
