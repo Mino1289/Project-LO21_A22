@@ -22,10 +22,16 @@ int main(int argc, char* argv[]) {
 
 	uint longIndiv = 16;
 	float pCroise = 0.5;
-	uint taillePop = get_integer_input("Quelle taille de population souhaitez-vous ? (8-256000): ", 8, 256000);
+	uint taillePop = get_integer_input("Quelle taille de population souhaitez-vous ? (20-200): ", 20, 200);
 	float tSelectp = get_float_input("Quel taux de sélection souhaitez-vous ? (0.1-0.9): ", 0.1, 0.9);
-	uint nGen = get_integer_input("Combien de génération souhaitez-vous ? (4-25600): ", 4, 256000);
-	
+	uint nGen = get_integer_input("Combien de génération souhaitez-vous ? (20-200): ", 20, 200);
+
+	printf("Taille des individus : %d\n", longIndiv);
+	printf("Probabilité de croisement : %.2f\n", pCroise);
+	printf("Taille de la population : %d\n", taillePop);
+	printf("Taux de sélection : %.2f\n", tSelectp);
+	printf("Nombre de génération : %d\n", nGen);
+
 	uint tSelect = tSelectp*taillePop; 
 	// on préfère le nombre qu'un pourcentage de la population
 

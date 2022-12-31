@@ -15,7 +15,7 @@ ifeq ($(OS), Windows_NT)
 	LIBTARGET :=$(LIBCORENAME:=.dll)
 	CLEANCMD = @del /q *.o *.dll *.exe *.so main.txt
 else
-	EXPORT = export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
+	EXPORT = sh export.sh
 	LIBTARGET :=lib$(LIBCORENAME:=.so)
 	LIBSDIR += -L/usr/lib
 	INCLUDEDIR += -I/usr/include
@@ -34,8 +34,7 @@ EXESOURCEOFILE = $(EXESOURCE:=.o)
 all: $(TARGET)
 
 run: $(TARGET)
-	$(EXPORT) 
-	$(TARGET)
+	$(EXPORT) $(TARGET)
 
 $(TARGET): $(EXESOURCEOFILE) $(LIBTARGET) 
 	$(CXX) $(EXESOURCEOFILE) -l$(LIBCORENAME) $(LIBSDIR) -o $(TARGET) -lm
